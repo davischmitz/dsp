@@ -15,17 +15,20 @@ t = np.arange(0,1,Ts) # vetor de tempo
 
 x = chirp(t, f0=20, f1=20000, t1=1, method='linear');
 
-fc=5000;  #frequencia de corte
-zeta=0.707;
-C=1/(np.tan(np.pi*fc/Fs));
+fc = 5000;  #frequencia de corte
 
-b0 = 1/(1+2*zeta*C+C*C);
+L = 0.000100
+Cap = 0.000220
+R = 1
+d = ((L*Cap*np.power((2/Ts), 2)) + (R*Cap*(2/Ts)) + 1)
+
+b0 = 1/d
 b1 = 2*b0;
 b2 = b0;
 
 a0 = 1;
-a1=2*b0*(1-C*C);
-a2=b0*(1-2*zeta*C+C*C);
+a2 = ((L*Cap*(np.power((2/Ts), 2))) - (R*Cap*(2/Ts) + 1)) / d
+a1 = (((-2)*L*Cap*np.power((2/Ts), 2)) + 2) / d
 
 
 #Variaveis de estado

@@ -1,26 +1,48 @@
-import numpy
+
 import matplotlib.pyplot as plt
+import numpy as np
 
+# implementação da função abs do python, calcula o valor absoluto dos elementos complexos do array z
+def magn(z):
+    #return np.sqrt(z.real**2 + z.imag**2)
+    return ((z.real**2 + z.imag**2)*(1/2))
 
-def naive_DFT(x):
-    N = numpy.size(x)
-    X = numpy.zeros((N,), dtype=numpy.complex128)
-    for m in range(0, N):
-        for n in range(0, N):
-            X[m] += x[n]*numpy.exp(-numpy.pi*2j*m*n/N)
-    return X
+Fs = 1500  # taxa de amostragem
+Ts = 1.0 / Fs  # periodo de amostragem
 
+# arange cria um array com valores igualmente espaçados dentro de um intervalo especificado
+t = np.arange(0, 0.02, Ts)  # vetor de tempo que represente o tempo de amostragem do sinal que será analisado pela DFT
 
-x = numpy.random.rand(1024,)
-# compute DFT
-X = naive_DFT(x)
-# compute FFT using numpy's fft function
-X2 = numpy.fft.fft(x)
-# now compare DFT with numpy fft
+f1 = 100  # frequencia do sinal 1
+x1_n = np.sin(2 * np.pi * f1 * t + 0)
 
-plt.subplot(221)
-plt.plot(x)
-plt.subplot(222)
-plt.plot(X2)
+f2 = 300  # frequencia do sinal 2
+x2_n = np.sin(2 * np.pi * f2 * t + np.pi)
+
+x_n = x1_n + x2_n
+
+n = len(x_n)  # tamanho do sinal
+k = np.arange(n)  # vetor em k
+T = n / Fs
+
+frq = k / T  # os dois lados do vetor de frequencia
+frq = frq[range(int(n/2))]  # apenas um lado
+
+X = np.zeros(int(n/2), dtype=np.complex64)
+
+for m in range(0, int(n/2)):
+    mysumm = 0
+    for nn in range(0, n):
+        mysumm += x_n[nn] * (np.cos(2 * np.pi * nn * m / n) - 1j * np.sin(2 * np.pi * nn * m / n))
+    X[m] = mysumm
+
+fig, ax = plt.subplots(2, 1)
+
+ax[0].plot(t, x_n)
+ax[0].set_xlabel('Tempo')
+ax[0].set_ylabel('Amplitude')
+ax[1].plot(frq, magn(X), 'r')
+ax[1].set_xlabel('Freq (Hz)')
+ax[1].set_ylabel('|X(freq)|')
 
 plt.show()
