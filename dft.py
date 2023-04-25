@@ -41,6 +41,7 @@ for m in range(0, int(n/2)):
     X[m] = mysumm
 
 fig, ax = plt.subplots(4, 1)
+ax[0].set_title('DFT')
 ax[0].plot(t, x_n)
 ax[0].set_xlabel('Tempo')
 ax[0].set_ylabel('Amplitude')
@@ -50,6 +51,7 @@ ax[1].set_ylabel('|X(freq)|')
 
 X = np.fft.fft(x_n)/n  # cálculo utilizando a fft do numpy para comparação
 X = X[range(int(n/2))]
+ax[2].set_title('FFT')
 ax[2].plot(t, x_n)
 ax[2].set_xlabel('Tempo')
 ax[2].set_ylabel('Amplitude')
