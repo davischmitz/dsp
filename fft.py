@@ -32,7 +32,7 @@ fig, ax = plt.subplots(2, 1)
 ax[0].plot(t, x_n)
 ax[0].set_xlabel('Tempo')
 ax[0].set_ylabel('Amplitude')
-ax[1].plot(frq, 2 * abs(X), 'r')
+ax[1].plot(frq, 2 * abs(X), 'r') # módulo é uma função par. O sinal é espelhado na esquerda e direita. Como pegamos somente o lado esquerdo, a amplitude deve ser duplicada
 ax[1].set_xlabel('Freq (Hz)')
 ax[1].set_ylabel('|X(freq)|')
 
